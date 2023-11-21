@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-export default function player({ initialName, symbol, isActive }) {
+export default function Player({
+  initialName,
+  symbol,
+  isActive,
+  onChangeName,
+}) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
 
   function handleEditClick() {
-    setIsEditing((editing) => !editing); // when updating the usesate based on previous state this is wrong way
+    setIsEditing((editing) => !editing);
+
+    if (isEditing) {
+      onChangeName(symbol, playerName);
+    }
   }
 
   function handleChange(event) {
@@ -13,12 +22,13 @@ export default function player({ initialName, symbol, isActive }) {
   }
 
   let editablePlayerName = <span className="player-name">{playerName}</span>;
-  // let btnCapture = 'Save'
-  if (isEditing === true) {
+  // let btnCaption = 'Edit';
+
+  if (isEditing) {
     editablePlayerName = (
       <input type="text" required value={playerName} onChange={handleChange} />
     );
-    // btnCapture="Edit"
+    // btnCaption = 'Save';
   }
 
   return (
@@ -27,7 +37,7 @@ export default function player({ initialName, symbol, isActive }) {
         {editablePlayerName}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button onClick={handleEditClick}>{isEditing ? "Save" : "Edit"}</button>
+      <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
     </li>
   );
 }
